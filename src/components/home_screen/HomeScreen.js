@@ -11,7 +11,8 @@ class HomeScreen extends Component {
         const newTodo={
             name:'',
             owner:'',
-            items:[]
+            items:[],
+            date: new Date()
         }
         const firestore=getFirestore();
         firestore.collection('todoLists').add(newTodo).then((docRef)=>{
@@ -67,6 +68,6 @@ const mapDispatchToProps=(dispatch)=>{
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
-      { collection: 'todoLists' },
+      { collection: 'todoLists', orderBy: ['date', 'desc']},
     ]),
 )(HomeScreen);
