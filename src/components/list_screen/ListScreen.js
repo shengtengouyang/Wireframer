@@ -3,7 +3,8 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import ItemsList from './ItemsList.js'
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, getFirebase } from 'react-redux-firebase';
+import { getFirestore } from 'redux-firestore';
 
 class ListScreen extends Component {
     state = {
@@ -18,6 +19,11 @@ class ListScreen extends Component {
             ...state,
             [target.id]: target.value,
         }));
+        const firestore=getFirestore();
+        firestore.collection('todoLists').doc(this.props.todoList.id).set({
+            ...this.props.todoList,
+            [target.id]: target.value
+        })
     }
 
     render() {
