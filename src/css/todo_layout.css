@@ -33,6 +33,15 @@ form {
 form button, form h5 {
   margin: 20px 0;
 }
+.itemsHeader{
+  position: relative;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-radius: 5px 5px 5px 5px;
+}
+.hideOverflow{
+  overflow: hidden;
+}
 
 input[type=text]:not(.browser-default):focus:not([readonly]),
 input[type=email]:not(.browser-default):focus:not([readonly]),

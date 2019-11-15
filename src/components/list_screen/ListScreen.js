@@ -32,16 +32,17 @@ class ListScreen extends Component {
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
-
+        if(!todoList)
+	        return <React.Fragment />
         return (
-            <div className="container white">
+            <div className="container pink lighten-5">
                 <h5 className="grey-text text-darken-3">Todo List</h5>
                 <div className="input-field">
-                    <label htmlFor="email">Name</label>
+                    <label className={todoList.name?"active":""} htmlFor="email">Name</label>
                     <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={todoList.name} />
                 </div>
                 <div className="input-field">
-                    <label htmlFor="password">Owner</label>
+                    <label className={todoList.owner?"active":""} htmlFor="password">Owner</label>
                     <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange} value={todoList.owner} />
                 </div>
                 <ItemsList todoList={todoList} />
@@ -54,7 +55,8 @@ const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.match.params;
   const { todoLists } = state.firestore.data;
   const todoList = todoLists ? todoLists[id] : null;
-  todoList.id = id;
+  if(todoList)
+	todoList.id = id;
 
   return {
     todoList,
