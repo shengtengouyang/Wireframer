@@ -22,7 +22,9 @@ class ItemsList extends React.Component {
                         <ItemCard todoList={todoList} item={item} key={item.id} />
                     );})
                 }
-            </div>
+                <div className="center-align">
+                <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">add</i></a>
+            </div></div>
         );
     }
 }

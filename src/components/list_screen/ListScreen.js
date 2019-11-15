@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import ItemsList from './ItemsList.js'
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import { getFirestore } from 'redux-firestore';
+import {Button, Modal} from 'react-materialize';
 
 class ListScreen extends Component {
     state = {
@@ -36,7 +37,23 @@ class ListScreen extends Component {
 	        return <React.Fragment />
         return (
             <div className="container pink lighten-5">
-                <h5 className="grey-text text-darken-3">Todo List</h5>
+                <div className="row">
+                    <h5 className="grey-text text-darken-3 col s2">Todo List</h5>
+                    <Modal header="Delete list?"
+                        options={{dismissible:false}}
+                        trigger={<i className="material-icons medium right col offset-s6">delete</i>}
+                        actions={
+                            <p className="left" style={{padding:'0 0 0 20px'}}>The list will not be retreivable.</p>}
+                        >
+                        <p>Are you sure you want to delete this list?</p>  
+                        <Button waves="light" style={{marginRight: '5px'}}>
+                            Yes
+                        </Button>
+                        <Button waves="light" style={{marginRight: '5px'}}>
+                            No
+                        </Button>
+                    </Modal>
+                </div>
                 <div className="input-field">
                     <label className={todoList.name?"active":""} htmlFor="email">Name</label>
                     <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={todoList.name} />
