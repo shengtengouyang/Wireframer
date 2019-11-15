@@ -26,6 +26,10 @@ class ListScreen extends Component {
             [target.id]: target.value
         })
     }
+    handleModalYes=()=>{
+        const firestore=getFirestore();
+        firestore.collection('todoLists').doc(this.props.todoList.id).delete();
+    }
 
     render() {
         const auth = this.props.auth;
@@ -34,7 +38,7 @@ class ListScreen extends Component {
             return <Redirect to="/" />;
         }
         if(!todoList)
-	        return <React.Fragment />
+	        return <Redirect to="/" />
         return (
             <div className="container pink lighten-5">
                 <div className="row">
@@ -46,10 +50,10 @@ class ListScreen extends Component {
                             <p className="left" style={{padding:'0 0 0 20px'}}>The list will not be retreivable.</p>}
                         >
                         <p>Are you sure you want to delete this list?</p>  
-                        <Button waves="light" style={{marginRight: '5px'}}>
+                        <Button className="modal-close" waves="light" style={{marginRight: '5px'}} onClick={this.handleModalYes}>
                             Yes
                         </Button>
-                        <Button waves="light" style={{marginRight: '5px'}}>
+                        <Button className="modal-close" waves="light" style={{marginRight: '5px'}} onClick={()=>{}}>
                             No
                         </Button>
                     </Modal>

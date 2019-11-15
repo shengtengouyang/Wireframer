@@ -9,7 +9,7 @@ class ItemCard extends React.Component {
                 <div className="card-content grey-text text-darken-3">
                     
                 <div className="row">
-                    <span className={"card-title "+"col"}>{item.description}</span>
+                    <span className={"card-title col"}>{item.description}</span>
                 </div> 
                 <div className="row">
                     <span className="col s3">{'Assigned To: '+item.assigned_to} </span>

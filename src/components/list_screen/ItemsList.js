@@ -11,7 +11,7 @@ class ItemsList extends React.Component {
         console.log("ItemsList: todoList.id " + todoList.id);
         return (
             <div className="todo-lists section">
-                <div className={"row "+"itemsHeader "+"lime darken-2 "+"z-depth-1"}>
+                <div className={"row itemsHeader lime darken-2 z-depth-1"}>
                     <h5 className="col s3">Task</h5>
                     <h5 className="col s3">Due Date</h5>
                     <h5 className="col s3">Status</h5>
@@ -23,7 +23,7 @@ class ItemsList extends React.Component {
                     );})
                 }
                 <div className="center-align">
-                <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">add</i></a>
+                <button className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">add</i></button>
             </div></div>
         );
     }
