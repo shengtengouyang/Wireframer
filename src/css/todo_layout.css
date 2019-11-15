@@ -42,6 +42,10 @@ form button, form h5 {
 .hideOverflow{
   overflow: hidden;
 }
+.fixed-action-btn {
+  position: absolute;
+  bottom:30%;
+}
 
 input[type=text]:not(.browser-default):focus:not([readonly]),
 input[type=email]:not(.browser-default):focus:not([readonly]),

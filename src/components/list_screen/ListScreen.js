@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import ItemsList from './ItemsList.js'
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import { getFirestore } from 'redux-firestore';
-import {Button, Modal} from 'react-materialize';
+import {Button, Modal, Icon} from 'react-materialize';
 
 class ListScreen extends Component {
     state = {
@@ -45,7 +45,7 @@ class ListScreen extends Component {
                     <h5 className="grey-text text-darken-3 col s2">Todo List</h5>
                     <Modal header="Delete list?"
                         options={{dismissible:false}}
-                        trigger={<i className="material-icons medium right col offset-s6">delete</i>}
+                        trigger={<Button className="col offset-s9 btn-large red hoverable"><Icon large>delete</Icon></Button>}
                         actions={
                             <p className="left" style={{padding:'0 0 0 20px'}}>The list will not be retreivable.</p>}
                         >

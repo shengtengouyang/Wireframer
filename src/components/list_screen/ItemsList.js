@@ -5,6 +5,9 @@ import ItemCard from './ItemCard';
 import { firestoreConnect } from 'react-redux-firebase';
 
 class ItemsList extends React.Component {
+    handleAddItem=(e)=>{
+
+    }
     render() {
         const todoList = this.props.todoList;
         const items = todoList.items;
@@ -23,7 +26,9 @@ class ItemsList extends React.Component {
                     );})
                 }
                 <div className="center-align">
-                <button className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">add</i></button>
+                <button className="btn-floating btn-large waves-effect waves-light red hoverable" onClick={this.handleAddItem}>
+                    <i className="material-icons">add</i>
+                </button>
             </div></div>
         );
     }
