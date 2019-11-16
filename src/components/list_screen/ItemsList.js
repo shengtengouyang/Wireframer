@@ -6,9 +6,6 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom';
 
 class ItemsList extends React.Component {
-    handleAddItem=(e)=>{
-
-    }
     render() {
         const todoList = this.props.todoList;
         const items = todoList.items;
@@ -27,7 +24,7 @@ class ItemsList extends React.Component {
                     );})
                 }
                 <div className="center-align">
-                <Link to={"/todoList/"+todoList.id+"/item/-1"} className="btn-floating btn-large waves-effect waves-light red hoverable" onClick={this.handleAddItem}>
+                <Link to={"/todoList/"+todoList.id+"/item/-1"} className="btn-floating btn-large waves-effect waves-light red hoverable">
                     <i className="material-icons">add</i>
                 </Link>
             </div></div>
