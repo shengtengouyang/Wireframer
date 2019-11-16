@@ -13,10 +13,10 @@ class ItemCard extends React.Component {
         e.preventDefault();
     }
     render() {
-        const { item } = this.props;  
+        const { item, todoList } = this.props;  
         return (
             <div className="card z-depth-1 todo-list-link teal lighten-3 hoverable">
-                <Link to='/'>
+                <Link to={'/todoList/'+todoList.id+'/item/'+item.id}>
                 <div className="card-content grey-text text-darken-3">
                     
                     <div className="row">

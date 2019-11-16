@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import ItemCard from './ItemCard';
 import { firestoreConnect } from 'react-redux-firebase';
+import { Link } from 'react-router-dom';
 
 class ItemsList extends React.Component {
     handleAddItem=(e)=>{
@@ -26,9 +27,9 @@ class ItemsList extends React.Component {
                     );})
                 }
                 <div className="center-align">
-                <button className="btn-floating btn-large waves-effect waves-light red hoverable" onClick={this.handleAddItem}>
+                <Link to={"/todoList/"+todoList.id+"/item/-1"} className="btn-floating btn-large waves-effect waves-light red hoverable" onClick={this.handleAddItem}>
                     <i className="material-icons">add</i>
-                </button>
+                </Link>
             </div></div>
         );
     }
