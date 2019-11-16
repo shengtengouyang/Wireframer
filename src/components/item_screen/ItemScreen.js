@@ -10,7 +10,7 @@ import Button from 'react-materialize/lib/Button';
 import { Link } from 'react-router-dom';
 class ItemScreen extends Component {
     state={
-        item:{},
+        item:this.props.item,
     }
     handleChange = (e) => {
         const { target } = e;
@@ -24,11 +24,22 @@ class ItemScreen extends Component {
     handleCheck=()=>{
         this.setState({item:{...this.state.item, completed:!this.state.item.completed}});
     }
+    handleSubmit=()=>{
+        const item=this.state.item;
+        const todoList=this.props.todoList;
+        const firestore=getFirestore();
+        const items=todoList.items;
+        items[item.key]=item;
+        firestore.collection("todoLists").doc(todoList.id).set({
+            ...todoList,
+            items:items,
+        })
+    }
     render(){
         const auth = this.props.auth;
-        if(Object.keys(this.state.item).length===0){
-            this.setState({item: this.props.item});
-        }
+        // if(Object.keys(this.state.item).length===0){
+        //     this.setState({item: this.props.item});
+        // }
         const item=this.state.item;
         const todoList=this.props.todoList;
         if (!auth.uid) {
@@ -57,8 +68,8 @@ class ItemScreen extends Component {
                 </div>
                 <Checkbox value="Completed" label="Completed" checked={item.completed} onChange={this.handleCheck}/>
                 <div>
-                <Link to={'/todoList/'+todoList.id}>
-                <Button waves="light" style={{marginRight: '5px'}} onClick={this.handleSubmit}>
+                <Link to={'/todoList/'+todoList.id} onClick={this.handleSubmit}>
+                <Button waves="light" style={{marginRight: '5px'}} >
                             Submit
                 </Button>
                 </Link>
@@ -83,7 +94,7 @@ const mapStateToProps = (state, ownProps) => {
         item=todoList.items[key];
     
     if(!item){
-        item={description:'', assigned_to:'', due_date:'', completed:false, key:todoList.items.length}
+        item={description:'unknown', assigned_to:'unknown', due_date:'mm/dd/yyyy', completed:false, key:todoList.items.length}
         }
     }
     return {
