@@ -46,6 +46,15 @@ form button, form h5 {
   position: absolute;
   bottom:30%;
 }
+.fixed-action-btn.fixed-action-btn.direction-left ul li button{
+  transition: all 0.3s ease;
+}
+.fixed-action-btn.active.fixed-action-btn.direction-left ul li button{
+  opacity: 1; transform: scale(1) translateY(0px) translateX(0px);
+}
+.fixed-action-btn.fixed-action-btn.direction-left ul li button{
+  opacity: 0; transform: scale(0.4) translateY(0px) translateX(40px);
+}
 
 input[type=text]:not(.browser-default):focus:not([readonly]),
 input[type=email]:not(.browser-default):focus:not([readonly]),
