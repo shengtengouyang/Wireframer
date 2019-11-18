@@ -9,8 +9,8 @@ import { getFirestore } from 'redux-firestore';
 class HomeScreen extends Component {
     handleNewList=(e)=>{
         const newTodo={
-            name:'',
-            owner:'',
+            name:'unknown',
+            owner:'unknown',
             items:[],
             date: new Date()
         }
