@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { firestoreConnect } from 'react-redux-firebase';
-import TodoListLinks from './TodoListLinks';
+import WireframeLinks from './WireframeLinks';
 import {createTodoList} from '../../store/database/asynchHandler'
 import { getFirestore } from 'redux-firestore';
 class HomeScreen extends Component {
@@ -15,10 +15,10 @@ class HomeScreen extends Component {
             date: new Date()
         }
         const firestore=getFirestore();
-        firestore.collection('todoLists').add(newTodo).then((docRef)=>{
-            this.props.history.push('/todoList/'+docRef.id)
+        firestore.collection('users').doc(this.props.auth.uid).collection("wireframes")
+            .add(newTodo).then((docRef)=>{
+            this.props.history.push('/wireframe/'+docRef.id)
         })
-        // this.props.createTodoList(newTodo);
     }
     render() {
         if (!this.props.auth.uid) {
@@ -29,18 +29,18 @@ class HomeScreen extends Component {
             <div className="dashboard container">
                 <div className="row">
                     <div className="col s12 m4">
-                        <TodoListLinks />
+                        <WireframeLinks />
                     </div>
 
                     <div className="col s8">
                         <div className="banner">
-                            @todo<br />
-                            List Maker
+                                      TM<br />
+                            Wireframer
                         </div>
                         
                         <div className="home_new_list_container">
                                 <button className="home_new_list_button" onClick={this.handleNewList}>
-                                    Create a New To Do List
+                                    Create a New Wireframe
                                 </button>
                         </div>
                     </div>
@@ -59,15 +59,19 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps=(dispatch)=>{
     return{
-        createTodoList: todoList=>{
-            dispatch(createTodoList(todoList));
+        createTodoList: wireframe=>{
+            dispatch(createTodoList(wireframe));
         }
     }
 }
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect([
-      { collection: 'todoLists', orderBy: ['date', 'desc']},
-    ]),
+    firestoreConnect(props=>{ return [
+      { collection:'users',
+        doc: props.auth.uid,
+        subcollections: [{collection:"wireframes", orderBy: ['date', 'desc']}]
+        }
+    ];
+    })
 )(HomeScreen);

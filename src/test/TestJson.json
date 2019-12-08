@@ -1,0 +1,168 @@
+{
+    "wireframes": [
+        {
+            "name": "My dumb App",
+            "owner": "Rick Astley",
+            "width":"500px",
+            "height":"500px",
+            "controls": [
+                {
+                    "id": "button",
+                    "properties":"Submit",
+                    "font_size": 14,
+                    "background": "#64A0B3",
+                    "border_color": "#000000",
+                    "border_thickness": 2,
+                    "border_radius":2,
+                    "text_color": "#13A1CC",
+                    "position_left":"200px",
+                    "position_top":"200px",
+                    "width":"40px",
+                    "height":"20px"
+                },
+                {
+                    "id": "container",
+                    "properties":"Container",
+                    "font_size": 12,
+                    "background": "#641113",
+                    "border_color": "#000000",
+                    "border_thickness": 2,
+                    "border_radius":2,
+                    "text_color": "#13A1CC",
+                    "position_left":"0px",
+                    "position_top":"0px",
+                    "width":"500px",
+                    "height":"500px"
+                },
+                {
+                    "id": "textfield",
+                    "properties":"textfield",
+                    "font_size": 10,
+                    "background": "#2F1A13",
+                    "border_color": "#000000",
+                    "border_thickness": 2,
+                    "border_radius":2,
+                    "text_color": "#13A1CC",
+                    "position_left":"50px",
+                    "position_top":"50px",
+                    "width":"50px",
+                    "height":"20px"
+                }
+            ]
+        },
+        {
+            "name": "My Homepage",
+            "owner": "Bob Vila",
+            "width":"600px",
+            "height":"800px",
+            "controls": [
+                {
+                    "id": "container",
+                    "properties":"Container",
+                    "font_size": 12,
+                    "background": "#1DBEF0",
+                    "border_color": "#000000",
+                    "border_thickness": 2,
+                    "border_radius":3,
+                    "text_color": "#13A1CC",
+                    "position_left":"0px",
+                    "position_top":"0px",
+                    "width":"500px",
+                    "height": "700px"
+                },
+                {
+                    "id": "label",
+                    "properties":"Label",
+                    "font_size": 18,
+                    "background": "#28505C",
+                    "border_color": "#000000",
+                    "border_thickness": 1,
+                    "border_radius":3,
+                    "text_color": "#13A1CC",
+                    "position_left":"100px",
+                    "position_top":"100px",
+                    "width":"80px",
+                    "height": "20px"
+                },
+                {
+                    "id": "button",
+                    "properties":"button",
+                    "font_size": 12,
+                    "background": "64A0B3",
+                    "border_color": "#000000",
+                    "border_thickness": 3,
+                    "border_radius":4,
+                    "text_color": "#13A1CC",
+                    "position_left":"100px",
+                    "position_top":"300px",
+                    "width":"50px",
+                    "height": "10px"
+                }
+            ]
+        },
+        {
+            "name": "CSE316Homepage",
+            "owner": "Richard King",
+            "width":"800px",
+            "height":"1000px",
+            "controls": [
+                {
+                    "id": "container",
+                    "properties":"Container",
+                    "font_size": 15,
+                    "background": "#1DBEF0",
+                    "border_color": "#000000",
+                    "border_thickness": 3,
+                    "border_radius":3,
+                    "text_color": "#13A1CC",
+                    "position_left":"20px",
+                    "position_top":"20px",
+                    "width":"500px",
+                    "height": "700px"
+                },
+                {
+                    "id": "label",
+                    "properties":"Login",
+                    "font_size": 15,
+                    "background": "#2E454B",
+                    "border_color": "#000000",
+                    "border_thickness": 2,
+                    "border_radius":1,
+                    "text_color": "#9BA4A6",
+                    "position_left":"200px",
+                    "position_top":"300px",
+                    "width":"100px",
+                    "height": "30px"
+                },
+                {
+                    "id": "textfield",
+                    "properties":"input",
+                    "font_size": 15,
+                    "background": "#81D9F4",
+                    "border_color": "#000000",
+                    "border_thickness": 3,
+                    "border_radius":3,
+                    "text_color": "#2B7F98",
+                    "position_left":"200px",
+                    "position_top":"400px",
+                    "width":"100px",
+                    "height": "30px"
+                },
+                {
+                    "id": "button",
+                    "properties":"Submit",
+                    "font_size": 15,
+                    "background": "#1DBEF0",
+                    "border_color": "#000000",
+                    "border_thickness": 3,
+                    "border_radius":3,
+                    "text_color": "#13A1CC",
+                    "position_left":"200px",
+                    "position_top":"500px",
+                    "width":"50px",
+                    "height": "20px"
+                }
+            ]
+        }
+    ]
+}

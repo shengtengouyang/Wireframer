@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import todoJson from './TestTodoListData.json'
+import todoJson from './TestJson.json'
 import { getFirestore } from 'redux-firestore';
 import { Redirect } from 'react-router-dom'
 
@@ -11,21 +11,26 @@ class DatabaseTester extends React.Component {
     // TO LOG IN
     handleClear = () => {
         const fireStore = getFirestore();
-        fireStore.collection('todoLists').get().then(function(querySnapshot){
+        const auth=this.props.auth;
+        fireStore.collection('users').doc(auth.uid).collection('wireframes').get().then(function(querySnapshot){
             querySnapshot.forEach(function(doc) {
                 console.log("deleting " + doc.id);
-                fireStore.collection('todoLists').doc(doc.id).delete();
+                fireStore.collection('users').doc(auth.uid).collection('wireframes').doc(doc.id).delete();
             })
         });
     }
 
     handleReset = () => {
         const fireStore = getFirestore();
-        todoJson.todoLists.forEach(todoListJson => {
-            fireStore.collection('todoLists').add({
-                    name: todoListJson.name,
-                    owner: todoListJson.owner,
-                    items: todoListJson.items,
+        const auth=this.props.auth;
+        todoJson.wireframes.forEach(wireframeJson => {
+            fireStore.collection('users').doc(auth.uid).collection('wireframes').add({
+                    name: wireframeJson.name,
+                    owner: wireframeJson.owner,
+                    width:wireframeJson.width,
+                    height:wireframeJson.height,
+                    controls:wireframeJson.controls,
+                    user: auth.uid,
                     date: new Date()
                 }).then(() => {
                     console.log("DATABASE RESET");
