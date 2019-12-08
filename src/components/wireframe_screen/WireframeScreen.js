@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import ItemsList from './ItemsList.js'
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import { getFirestore } from 'redux-firestore';
 import {Button, Modal, Icon} from 'react-materialize';
 
-class ListScreen extends Component {
+class WireframeScreen extends Component {
     state = {
         name: '',
         owner: '',
@@ -15,14 +14,14 @@ class ListScreen extends Component {
 
     handleChange = (e) => {
         const { target } = e;
-
+        const auth=this.props.auth;
         this.setState(state => ({
             ...state,
             [target.id]: target.value,
         }));
         const firestore=getFirestore();
-        firestore.collection('todoLists').doc(this.props.todoList.id).set({
-            ...this.props.todoList,
+        firestore.collection('users').doc(auth.uid).collection('wireframes').set({
+            ...this.props.wireframe,
             [target.id]: target.value
         })
     }
@@ -33,16 +32,16 @@ class ListScreen extends Component {
 
     render() {
         const auth = this.props.auth;
-        const todoList = this.props.todoList;
+        const wireframe = this.props.wireframe;
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
-        if(!todoList)
+        if(!wireframe)
 	        return <Redirect to="/" />
         return (
             <div className="container pink lighten-5">
                 <div className="row">
-                    <h5 className="grey-text text-darken-3 col s2">Todo List</h5>
+                    <h5 className="grey-text text-darken-3 col s2">wireframe</h5>
                     <Modal header="Delete list?"
                         options={{dismissible:false}}
                         trigger={<Button className="col offset-s9 btn-large red hoverable"><Icon large>delete</Icon></Button>}
@@ -59,36 +58,45 @@ class ListScreen extends Component {
                     </Modal>
                 </div>
                 <div className="input-field">
-                    <label className={todoList.name?"active":""} htmlFor="email">Name</label>
-                    <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={todoList.name} />
+                    <label className={wireframe.name?"active":""} htmlFor="email">Name</label>
+                    <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={wireframe.name} />
                 </div>
                 <div className="input-field">
-                    <label className={todoList.owner?"active":""} htmlFor="password">Owner</label>
-                    <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange} value={todoList.owner} />
+                    <label className={wireframe.owner?"active":""} htmlFor="password">Owner</label>
+                    <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange} value={wireframe.owner} />
                 </div>
-                <ItemsList todoList={todoList} />
             </div>
         );
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log("ownprops is ", ownProps)
-  const { id } = ownProps.match.params;
-  const { todoLists } = state.firestore.data;
-  const todoList = todoLists ? todoLists[id] : null;
-  if(todoList)
-	todoList.id = id;
-
-  return {
-    todoList,
-    auth: state.firebase.auth,
-  };
+    console.log("state is ", state)
+    const { id } = ownProps.match.params;
+    if(state.firestore.data.users){
+        const { wireframes } = state.firestore.data.users[state.firebase.auth.uid];
+        const wireframe = wireframes ? wireframes[id] : null;
+        if(wireframe){
+            wireframe.id = id;
+            return {
+                wireframe,
+                auth: state.firebase.auth,
+            };
+        }
+    }
+    return{
+        wireframe: null,
+        auth: state.firebase.auth,
+    }
 };
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect([
-    { collection: 'todoLists', orderBy: ['date', 'desc'] },
-  ]),
-)(ListScreen);
+  firestoreConnect(props=> [
+    { collection:"users",
+      doc: props.auth.uid,
+      subcollections: [{collection:"wireframes", orderBy:['date', 'desc']}]
+      }
+  ]
+  ),
+)(WireframeScreen);

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import WireframeCard from './WireframeCard';
 import { getFirestore } from 'redux-firestore';
+import { firestoreConnect } from 'react-redux-firebase';
 
 class WireframeLinks extends React.Component {
     render() {
@@ -20,7 +21,7 @@ class WireframeLinks extends React.Component {
                             date:new Date()
                         })
                     }}>
-                        <WireframeCard wireframe={wireframe} />
+                        <WireframeCard wireframe={wireframe} auth={auth}/>
                     </Link>
                 ))}
             </div>
@@ -29,11 +30,22 @@ class WireframeLinks extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    const auth= state.firebase.auth
+    const wireframes=state.firestore.ordered.users?state.firestore.ordered.users[0]?state.firestore.ordered.users[0].wireframes?
+    state.firestore.ordered.users[0].wireframes:(state.firestore.ordered.users[1].wireframes?
+        state.firestore.ordered.users[1].wireframes:state.firestore.ordered.users):null:null
+    console.log("wireframe in wireframe links state", wireframes)
     return {
-        auth: state.firebase.auth,
-        wireframes: state.firestore.ordered.users?state.firestore.ordered.users.filter(user=>state.firebase.auth.uid===user.id)[0]?
-        state.firestore.ordered.users.filter(user=>state.firebase.auth.uid===user.id)[0].wireframes:null:null,
+        auth,
+        wireframes,
     };
 };
 
-export default compose(connect(mapStateToProps))(WireframeLinks);
+export default compose(connect(mapStateToProps),
+    firestoreConnect(props=> [
+        { collection:'users',
+        doc: props.auth.uid,
+        subcollections: [{collection:"wireframes", orderBy:['date', 'desc']}]
+        }
+    ])
+)(WireframeLinks);

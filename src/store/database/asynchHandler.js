@@ -27,20 +27,10 @@ export const registerHandler = (newUser, firebase) => (dispatch, getState, { get
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         initials: `${newUser.firstName[0]}${newUser.lastName[0]}`,
+        UIDesigner: true
     })).then(() => {
         dispatch(actionCreators.registerSuccess);
     }).catch((err) => {
         dispatch(actionCreators.registerError);
     });
 };
-
-export const createTodoList=(todoList)=>(dispatch, getState, { getFirestore })=>{
-  const firestore=getFirestore();
-  firestore.collection('todoLists').add(todoList).then((docRef)=>{
-    return docRef.id;
-  }).then(()=>{
-      dispatch(actionCreators.createTodoList);
-    }).catch((err)=>{
-      dispatch(actionCreators.createTodoList);
-    })
-}

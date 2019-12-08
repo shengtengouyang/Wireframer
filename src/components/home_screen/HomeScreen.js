@@ -4,19 +4,20 @@ import { compose } from 'redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { firestoreConnect } from 'react-redux-firebase';
 import WireframeLinks from './WireframeLinks';
-import {createTodoList} from '../../store/database/asynchHandler'
 import { getFirestore } from 'redux-firestore';
 class HomeScreen extends Component {
     handleNewList=(e)=>{
-        const newTodo={
+        const newWireframe={
             name:'unknown',
             owner:'unknown',
-            items:[],
+            width: '500px',
+            height: '500px',
+            controls:[],
             date: new Date()
         }
         const firestore=getFirestore();
         firestore.collection('users').doc(this.props.auth.uid).collection("wireframes")
-            .add(newTodo).then((docRef)=>{
+            .add(newWireframe).then((docRef)=>{
             this.props.history.push('/wireframe/'+docRef.id)
         })
     }
@@ -57,21 +58,12 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps=(dispatch)=>{
-    return{
-        createTodoList: wireframe=>{
-            dispatch(createTodoList(wireframe));
-        }
-    }
-}
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect(props=>{ return [
+    connect(mapStateToProps),
+    firestoreConnect(props=> [
       { collection:'users',
         doc: props.auth.uid,
-        subcollections: [{collection:"wireframes", orderBy: ['date', 'desc']}]
+        subcollections: [{collection:"wireframes", orderBy:['date', 'desc']}]
         }
-    ];
-    })
+    ])
 )(HomeScreen);
