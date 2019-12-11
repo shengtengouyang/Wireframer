@@ -8,8 +8,7 @@ import {Button, Modal, Icon} from 'react-materialize';
 
 class WireframeScreen extends Component {
     state = {
-        name: '',
-        owner: '',
+        wireframe: this.props.wireframe
     }
 
     handleChange = (e) => {
@@ -73,30 +72,21 @@ class WireframeScreen extends Component {
 const mapStateToProps = (state, ownProps) => {
     console.log("state is ", state)
     const { id } = ownProps.match.params;
-    if(state.firestore.data.users){
-        const { wireframes } = state.firestore.data.users[state.firebase.auth.uid];
-        const wireframe = wireframes ? wireframes[id] : null;
-        if(wireframe){
-            wireframe.id = id;
-            return {
-                wireframe,
-                auth: state.firebase.auth,
-            };
-        }
+    const {wireframes}=state.firebase.profile;
+    const wireframe=wireframes?wireframes[id]:null
+    if(wireframe){
+        wireframe.id=id;
     }
     return{
-        wireframe: null,
-        auth: state.firebase.auth,
+        wireframe,
+        auth: state.firebase.auth
     }
 };
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect(props=> [
-    { collection:"users",
-      doc: props.auth.uid,
-      subcollections: [{collection:"wireframes", orderBy:['date', 'desc']}]
-      }
+  firestoreConnect( [
+    { collection:"users"}
   ]
   ),
 )(WireframeScreen);

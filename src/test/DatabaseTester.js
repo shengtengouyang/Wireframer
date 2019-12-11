@@ -12,19 +12,17 @@ class DatabaseTester extends React.Component {
     handleClear = () => {
         const fireStore = getFirestore();
         const auth=this.props.auth;
-        fireStore.collection('users').doc(auth.uid).collection('wireframes').get().then(function(querySnapshot){
-            querySnapshot.forEach(function(doc) {
-                console.log("deleting " + doc.id);
-                fireStore.collection('users').doc(auth.uid).collection('wireframes').doc(doc.id).delete();
-            })
-        });
+        fireStore.collection('users').doc(auth.uid).update({wireframes:[]});
     }
 
     handleReset = () => {
         const fireStore = getFirestore();
+        const firebase=this.props.firebase;
         const auth=this.props.auth;
+        const wireframes=[];
         todoJson.wireframes.forEach(wireframeJson => {
-            fireStore.collection('users').doc(auth.uid).collection('wireframes').add({
+            const wireframe={
+                    key: wireframeJson.key,
                     name: wireframeJson.name,
                     owner: wireframeJson.owner,
                     width:wireframeJson.width,
@@ -32,12 +30,16 @@ class DatabaseTester extends React.Component {
                     controls:wireframeJson.controls,
                     user: auth.uid,
                     date: new Date()
-                }).then(() => {
-                    console.log("DATABASE RESET");
-                }).catch((err) => {
-                    console.log(err);
-                });
+                }
+            wireframes.push(wireframe);
         });
+        fireStore.collection('users').doc(auth.uid).update({
+            wireframes,}
+            ).then(() => {
+                console.log("DATABASE RESET");
+            }).catch((err) => {
+                console.log(err);
+            });
     }
 
     render() {

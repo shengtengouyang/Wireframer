@@ -14,11 +14,11 @@ class WireframeLinks extends React.Component {
         return (
             <div className="todo-lists section">
                 {wireframes && wireframes.map(wireframe => (
-                    <Link to={'/wireframe/' + wireframe.id} key={wireframe.id} onClick={()=>{
+                    <Link to={'/wireframe/' + wireframe.key} key={wireframe.key} onClick={()=>{
                         const firestore=getFirestore();
-                        firestore.collection('users').doc(auth.uid).collection('wireframes').doc(wireframe.id).set({
-                            ...wireframe,
-                            date:new Date()
+                        wireframes[wireframe.key]={...wireframe, date: new Date()};
+                        firestore.collection('users').doc(auth.uid).update({
+                            wireframes:wireframes
                         })
                     }}>
                         <WireframeCard wireframe={wireframe} auth={auth}/>
@@ -31,10 +31,8 @@ class WireframeLinks extends React.Component {
 
 const mapStateToProps = (state) => {
     const auth= state.firebase.auth
-    const wireframes=state.firestore.ordered.users?state.firestore.ordered.users[0]?state.firestore.ordered.users[0].wireframes?
-    state.firestore.ordered.users[0].wireframes:(state.firestore.ordered.users[1].wireframes?
-        state.firestore.ordered.users[1].wireframes:state.firestore.ordered.users):null:null
-    console.log("wireframe in wireframe links state", wireframes)
+    const users=state.firestore.data.users
+    const wireframes=users?users[auth.uid]?users[auth.uid].wireframes:null:null;
     return {
         auth,
         wireframes,
@@ -42,10 +40,4 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(connect(mapStateToProps),
-    firestoreConnect(props=> [
-        { collection:'users',
-        doc: props.auth.uid,
-        subcollections: [{collection:"wireframes", orderBy:['date', 'desc']}]
-        }
-    ])
 )(WireframeLinks);

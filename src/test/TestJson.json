@@ -1,6 +1,7 @@
 {
     "wireframes": [
         {
+            "key": 0,
             "name": "My dumb App",
             "owner": "Rick Astley",
             "width":"500px",
@@ -50,7 +51,8 @@
                 }
             ]
         },
-        {
+        {   
+            "key": 1,
             "name": "My Homepage",
             "owner": "Bob Vila",
             "width":"600px",
@@ -101,6 +103,7 @@
             ]
         },
         {
+            "key": 2,
             "name": "CSE316Homepage",
             "owner": "Richard King",
             "width":"800px",

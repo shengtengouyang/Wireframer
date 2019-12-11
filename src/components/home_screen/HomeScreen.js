@@ -16,8 +16,9 @@ class HomeScreen extends Component {
             date: new Date()
         }
         const firestore=getFirestore();
-        firestore.collection('users').doc(this.props.auth.uid).collection("wireframes")
-            .add(newWireframe).then((docRef)=>{
+        firestore.collection('users').doc(this.props.auth.uid).update({
+            wireframes: this.state.firebase.firestore.FieldValue.arrayUnion(newWireframe)
+        }).then((docRef)=>{
             this.props.history.push('/wireframe/'+docRef.id)
         })
     }
@@ -54,16 +55,13 @@ class HomeScreen extends Component {
 const mapStateToProps = (state) => {
     console.log("state in homescreen", state)
     return {
-        auth: state.firebase.auth
+        auth: state.firebase.auth,
     };
 };
 
 export default compose(
     connect(mapStateToProps),
-    firestoreConnect(props=> [
-      { collection:'users',
-        doc: props.auth.uid,
-        subcollections: [{collection:"wireframes", orderBy:['date', 'desc']}]
-        }
-    ])
+    firestoreConnect([
+        { collection: 'users'},
+      ]),
 )(HomeScreen);
