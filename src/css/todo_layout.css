@@ -70,3 +70,37 @@ input[type=email]:not(.browser-default):focus:not([readonly]) + label,
 input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   color: #ec407a !important;
 }
+
+.containerShape{
+  position: relative;
+  height: 50px;
+  width: 80px;
+  border: 1px solid #000;
+  border-radius: 2px;
+  margin: 10% auto 0;
+}
+.buttonShape{
+  position: relative;
+  height: 25px;
+  width: 90px;
+  border-radius: 2px;
+}
+.browser-default{
+  border-radius: 2px;
+}
+.buttonLabel, .inputLabel, .labelLabel, .containerLabel{
+  position: relative;
+  font-weight: bold;
+  margin-bottom: 10%;
+}
+.showPlace, .editPlace, .toolPlace{
+  border:1px solid black;
+  border-radius: 2px;
+}
+.controlHead{
+  border-bottom:1px solid black;
+}
+.toolPlace{
+  position: relative;
+  width: 25%;
+}

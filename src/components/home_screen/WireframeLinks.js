@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import WireframeCard from './WireframeCard';
 import { getFirestore } from 'redux-firestore';
-import { firestoreConnect } from 'react-redux-firebase';
 
 class WireframeLinks extends React.Component {
     render() {
@@ -31,8 +30,7 @@ class WireframeLinks extends React.Component {
 
 const mapStateToProps = (state) => {
     const auth= state.firebase.auth
-    const users=state.firestore.data.users
-    const wireframes=users?users[auth.uid]?users[auth.uid].wireframes:null:null;
+    const {wireframes}=state.firebase.profile;
     return {
         auth,
         wireframes,

@@ -4,65 +4,108 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import { getFirestore } from 'redux-firestore';
-import {Button, Modal, Icon} from 'react-materialize';
+import {Button, Icon} from 'react-materialize';
 
 class WireframeScreen extends Component {
     state = {
-        wireframe: this.props.wireframe
+        wireframe: this.props.wireframe,
+        selectedControl: null
     }
 
     handleChange = (e) => {
         const { target } = e;
-        const auth=this.props.auth;
-        this.setState(state => ({
+        this.setState((state)=>({
             ...state,
-            [target.id]: target.value,
+            wireframe: {...this.state.wireframe, [target.id]:target.value},
         }));
-        const firestore=getFirestore();
-        firestore.collection('users').doc(auth.uid).collection('wireframes').set({
-            ...this.props.wireframe,
-            [target.id]: target.value
-        })
-    }
-    handleModalYes=()=>{
-        const firestore=getFirestore();
-        firestore.collection('todoLists').doc(this.props.todoList.id).delete();
+        console.log("wireframe after change: ", this.state.wireframe);
     }
 
     render() {
         const auth = this.props.auth;
-        const wireframe = this.props.wireframe;
+        const wireframe = this.state.wireframe;
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
         if(!wireframe)
 	        return <Redirect to="/" />
         return (
-            <div className="container pink lighten-5">
+            <div className="pink lighten-5">
                 <div className="row">
-                    <h5 className="grey-text text-darken-3 col s2">wireframe</h5>
-                    <Modal header="Delete list?"
-                        options={{dismissible:false}}
-                        trigger={<Button className="col offset-s9 btn-large red hoverable"><Icon large>delete</Icon></Button>}
-                        actions={
-                            <p className="left" style={{padding:'0 0 0 20px'}}>The list will not be retreivable.</p>}
-                        >
-                        <p>Are you sure you want to delete this list?</p>  
-                        <Button className="modal-close" waves="light" style={{marginRight: '5px'}} onClick={this.handleModalYes}>
-                            Yes
-                        </Button>
-                        <Button className="modal-close" waves="light" style={{marginRight: '5px'}} onClick={()=>{}}>
-                            No
-                        </Button>
-                    </Modal>
+                    <div className="input-field col s6">
+                        <label className={wireframe.name?"active":""} htmlFor="email">Name</label>
+                        <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={wireframe.name} />
+                    </div>
+                    <div className="input-field col s6">
+                        <label className={wireframe.owner?"active":""} htmlFor="password">Owner</label>
+                        <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange} value={wireframe.owner} />
+                    </div>
                 </div>
-                <div className="input-field">
-                    <label className={wireframe.name?"active":""} htmlFor="email">Name</label>
-                    <input className="active" type="text" name="name" id="name" onChange={this.handleChange} value={wireframe.name} />
-                </div>
-                <div className="input-field">
-                    <label className={wireframe.owner?"active":""} htmlFor="password">Owner</label>
-                    <input className="active" type="text" name="owner" id="owner" onChange={this.handleChange} value={wireframe.owner} />
+                <div className="row card horizontal">
+                    <div className="toolPlace">
+                    <div className="controlHead col s12">
+                        <div className="col s2">
+                            <Icon>zoom_in</Icon>
+                        </div>
+                        <div className="col s2">
+                            <Icon>zoom_out</Icon>
+                        </div>
+                        <div className="col s2 offset-s4">save</div>
+                        <div className="col s2">close</div>
+                    </div>    
+                    <div className="controlPlace col s12 center">
+                        <div className="containerShape"></div>
+                        <div className="containerLabel">container</div>
+                        <div>Promote for Input</div>
+                        <div className="labelLabel">Label</div>
+                        <button className="buttonShape">Submit</button>
+                        <div className="buttonLabel">Button</div>
+                        <input className="inputShape browser-default" type="text" placeholder="Input" readOnly onClick={()=>{alert("bbb")}}></input>
+                        <div className="inputLabel">Textfield</div>
+
+                        <div className="input-field col s6">
+                            <label className={wireframe.width?"active":""} htmlFor="digit">Width</label>
+                            <input className="active" type="number" name="width" id="width" onChange={this.handleChange} value={wireframe.width} />
+                        </div>
+                        <div className="input-field col s6">
+                            <label className={wireframe.height?"active":""} htmlFor="digit">Height</label>
+                            <input className="active" type="number" name="height" id="height" onChange={this.handleChange} value={wireframe.height} />
+                        </div>
+
+                        <div className="center"><Button>Update</Button></div>
+                        
+                    </div>
+                    </div>
+                    <div className="col s6 showPlace">
+                        bbb
+                    </div>
+                    <div className="col s3 editPlace z-depth-999">
+                        <div>Properties</div>
+                        <input className="browser-default" type="text" name="properties" id="properties" onChange={this.handleChange} value="ab" />
+                        <div>Font Size: 
+                        <input className="browser-default" type="text" name="font_size" id="font_size" onChange={this.handleChange} value="cc" />
+                        </div>
+                        <div>
+                            Background:
+                            <input type="color" name="background" id="background" onChange={this.handleChange} value="cb"/>
+                        </div>
+                        <div>
+                            Border Color:
+                            <input type="color" name="border_color" id="border_color" onChange={this.handleChange} value="cc" />
+                        </div>
+                        <div>
+                            Text Color:
+                            <input type="color" name="text_color" id="text_color" onChange={this.handleChange} value="cc" />
+                        </div>
+                        <div>
+                            Border Thickness:
+                            <input className="browser-default" type="text" name="border_thickness" id="border_thickness" onChange={this.handleChange} value="cb"/>
+                        </div>
+                        <div>
+                            Border Radius:
+                            <input className="browser-default" type="text" name="border_radius" id="border_radius" onChange={this.handleChange} value="cc" />
+                        </div>
+                    </div>
                 </div>
             </div>
         );
