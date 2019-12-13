@@ -6,6 +6,7 @@
             "owner": "Rick Astley",
             "width":500,
             "height":500,
+            "zoomLevel":1,
             "controls": [
                 {
                     "id": "button",
@@ -57,6 +58,7 @@
             "owner": "Bob Vila",
             "width":600,
             "height":800,
+            "zoomLevel":1,
             "controls": [
                 {
                     "id": "container",
@@ -108,6 +110,7 @@
             "owner": "Richard King",
             "width":800,
             "height":1000,
+            "zoomLevel":1,
             "controls": [
                 {
                     "id": "container",

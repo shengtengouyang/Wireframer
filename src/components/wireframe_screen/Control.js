@@ -4,15 +4,13 @@ import { relative } from 'path';
 class Control extends React.Component {
 
     render() {
-        const { index,selectedIndex,control, select, deselect,drag, changeSize} = this.props;
+        const { index,selectedIndex,control, select, zoomLevel,drag, changeSize} = this.props;
         const selected=selectedIndex===index
         console.log("width in control"+index, control.width)
         console.log("height in control"+index, control.height)
         return (
             <Rnd
-                tabIndex="0" 
-                // onBlur={()=>deselect()}
-                onClick={(e)=>{select(control); e.preventDefault();}}
+                onClick={(e)=>{select(control);e.stopPropagation()}}
                 default={{
                     x:control.position_left,
                     y:control.position_top,
@@ -20,14 +18,18 @@ class Control extends React.Component {
                     height: control.height,
                 }}
                 style={{
+                    display:"flex",
                     background:control.background, 
                     borderColor:control.border_color,
-                    borderWidth: control.border_thickness,
-                    borderRadius: control.border_radius,
-                    fontSize: control.fontSize,
+                    borderStyle:"solid",
+                    alignItems:"center",
+                    justifyContent: "center",
+                    borderWidth: control.border_thickness+"px",
+                    borderRadius: control.border_radius+"px",
+                    fontSize: control.font_size+"px",
                     color: control.text_color,
-                    position: "absolute"
                 }}
+                scale={zoomLevel}
                 onDragStop={(e,d)=>{drag(d.x, d.y, index)}}
                 onResizeStop={(e,d,ref,delta,position)=>{changeSize(ref.style.width,ref.style.height,position,index);
                 console.log(position);
@@ -46,12 +48,8 @@ class Control extends React.Component {
                 }
                 disableDragging={!selected}
                 
-            >
+            >   
                 {control.properties}
-                {control.width}
-                {control.height}
-                {control.position_left}
-                {control.position_top}
                 <div className={selected?"topLeftCorner":""} ></div>
                 <div className={selected?"topRightCorner":""} ></div>
                 <div className={selected?"bottomLeftCorner":""} ></div>

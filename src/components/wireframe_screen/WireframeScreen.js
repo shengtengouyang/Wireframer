@@ -22,6 +22,18 @@ class WireframeScreen extends Component {
         console.log("wireframe after change: ", this.state.wireframe);
     }
 
+    handleChangeControl=(e)=>{
+        const{target}=e;
+        console.log("changeControl id",target.id)
+        console.log("changeControl value",target.value)
+        var wireframe=this.state.wireframe;
+        var selectedControl=this.state.selectedControl;
+        const index=wireframe.controls.indexOf(selectedControl);
+        wireframe.controls[index]={...selectedControl, [target.id]:target.value};
+        selectedControl=wireframe.controls[index];
+        this.setState({wireframe, selectedControl})
+    }
+
     handleSelect=(control)=>{
         this.setState({selectedControl:control});
     }
@@ -33,7 +45,7 @@ class WireframeScreen extends Component {
         var wireframe=this.state.wireframe;
         wireframe.controls[index].position_left=x;
         wireframe.controls[index].position_top=y;
-        this.setState({wireframe: wireframe});
+        this.setState({wireframe});
     }
 
     handleResize=(width, height,position, index)=>{
@@ -44,6 +56,21 @@ class WireframeScreen extends Component {
             position_left:position.x, 
             position_top: position.y}
         this.setState({wireframe: wireframe});
+    }
+    handleZoomIn=()=>{
+        var wireframe=this.state.wireframe;
+        if(wireframe.zoomLevel<2){
+            wireframe.zoomLevel+=0.1;
+            this.setState({wireframe: wireframe});
+        }
+    }
+
+    handleZoomOut=()=>{
+        var wireframe=this.state.wireframe;
+        if(wireframe.zoomLevel>0.5){
+            wireframe.zoomLevel-=0.1;
+            this.setState({wireframe: wireframe});
+        }
     }
 
     render() {
@@ -56,7 +83,7 @@ class WireframeScreen extends Component {
         if(!wireframe)
 	        return <Redirect to="/" />
         return (
-            <div className="pink lighten-5">
+            <div className="pink lighten-5" onClick={(e)=>{this.handleDeselect()}}>
                 <div className="row">
                     <div className="input-field col s6">
                         <label className={wireframe.name?"active":""} htmlFor="email">Name</label>
@@ -70,10 +97,10 @@ class WireframeScreen extends Component {
                 <div className="row card horizontal">
                     <div className="toolPlace">
                     <div className="controlHead col s12">
-                        <div className="col s2">
+                        <div className="col s2" onClick={()=>{this.handleZoomIn()}} style={wireframe.zoomLevel>=2?{opacity:0.3}:{}}>
                             <Icon>zoom_in</Icon>
                         </div>
-                        <div className="col s2">
+                        <div className="col s2" onClick={()=>this.handleZoomOut()} style={wireframe.zoomLevel<=0.5?{opacity:0.3}:{}}>
                             <Icon>zoom_out</Icon>
                         </div>
                         <div className="col s2 offset-s4">save</div>
@@ -107,6 +134,7 @@ class WireframeScreen extends Component {
                             {
                                 width: wireframe.width,
                                 height:wireframe.height,
+                                transform: "translate(-50%, -50%)"+"scale("+wireframe.zoomLevel+")",
                             }
                         }>
                         {wireframe.controls && wireframe.controls.map(control => (
@@ -115,9 +143,9 @@ class WireframeScreen extends Component {
                                 selectedIndex={wireframe.controls.indexOf(this.state.selectedControl)}
                                 control={control} 
                                 select={this.handleSelect}
-                                deselect={this.handleDeselect}
                                 drag={this.handleDrag}
                                 changeSize={this.handleResize}
+                                zoomLevel={wireframe.zoomLevel}
                                 >
                                 </Control>
                             ))}
@@ -125,32 +153,32 @@ class WireframeScreen extends Component {
                     </div>
                     <div className="col s3 editPlace z-depth-999">
                         {!selectedControl?null:
-                        <div>
+                        <div onClick={(e)=>{e.stopPropagation()}}>
                         <div>Properties
-                        <input className="browser-default" type="text" name="properties" id="properties" onChange={this.handleChange} value={selectedControl.properties} />
+                        <input className="browser-default" type="text" name="properties" id="properties" onChange={this.handleChangeControl} value={selectedControl.properties} />
                         </div>
                         <div>Font Size: 
-                        <input className="browser-default" type="text" name="font_size" id="font_size" onChange={this.handleChange} value={selectedControl.font_size} />
+                        <input className="browser-default" type="text" name="font_size" id="font_size" onChange={this.handleChangeControl} value={selectedControl.font_size} />
                         </div>
                         <div>
                             Background:
-                            <input type="color" name="background" id="background" onChange={this.handleChange} value={selectedControl.background}/>
+                            <input type="color" name="background" id="background" onChange={this.handleChangeControl} value={selectedControl.background}/>
                         </div>
                         <div>
                             Border Color:
-                            <input type="color" name="border_color" id="border_color" onChange={this.handleChange} value={selectedControl.border_color} />
+                            <input type="color" name="border_color" id="border_color" onChange={this.handleChangeControl} value={selectedControl.border_color} />
                         </div>
                         <div>
                             Text Color:
-                            <input type="color" name="text_color" id="text_color" onChange={this.handleChange} value={selectedControl.text_color} />
+                            <input type="color" name="text_color" id="text_color" onChange={this.handleChangeControl} value={selectedControl.text_color} />
                         </div>
                         <div>
                             Border Thickness:
-                            <input className="browser-default" type="text" name="border_thickness" id="border_thickness" onChange={this.handleChange} value={selectedControl.border_thickness}/>
+                            <input className="browser-default" type="text" name="border_thickness" id="border_thickness" onChange={this.handleChangeControl} value={selectedControl.border_thickness}/>
                         </div>
                         <div>
                             Border Radius:
-                            <input className="browser-default" type="text" name="border_radius" id="border_radius" onChange={this.handleChange} value={selectedControl.border_radius} />
+                            <input className="browser-default" type="text" name="border_radius" id="border_radius" onChange={this.handleChangeControl} value={selectedControl.border_radius} />
                         </div>
                         </div>}
                     </div>

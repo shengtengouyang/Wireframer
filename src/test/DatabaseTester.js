@@ -29,6 +29,7 @@ class DatabaseTester extends React.Component {
                     height:wireframeJson.height,
                     controls:wireframeJson.controls,
                     user: auth.uid,
+                    zoomLevel:wireframeJson.zoomLevel,
                     date: new Date()
                 }
             wireframes.push(wireframe);
