@@ -72,35 +72,69 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 }
 
 .containerShape{
-  position: relative;
   height: 50px;
   width: 80px;
-  border: 1px solid #000;
-  border-radius: 2px;
   margin: 10% auto 0;
 }
 .buttonShape{
-  position: relative;
   height: 25px;
   width: 90px;
-  border-radius: 2px;
 }
-.browser-default{
-  border-radius: 2px;
-}
+
 .buttonLabel, .inputLabel, .labelLabel, .containerLabel{
   position: relative;
   font-weight: bold;
   margin-bottom: 10%;
 }
-.showPlace, .editPlace, .toolPlace{
+.showPlace, .editPlace, .toolPlace, .wireframePlace, .buttonShape, .containerShape, .browser-default{
   border:1px solid black;
   border-radius: 2px;
+  position: relative;
 }
+.wireframePlace{
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+}
+
 .controlHead{
   border-bottom:1px solid black;
 }
 .toolPlace{
-  position: relative;
   width: 25%;
+}
+.topLeftCorner, .topRightCorner, .bottomLeftCorner, .bottomRightCorner{
+  width: 10px;
+  height: 10px;
+  border: 1px solid black;
+  border-radius: 2px;
+  background-color: white;
+}
+
+.topLeftCorner{
+  position: absolute;
+  left: -5px;
+  top: -5px;
+}
+.topRightCorner{
+  position: absolute;
+  left: 100%;
+  top: -5px;
+  margin-left: -5px;
+}
+.bottomLeftCorner{
+  position: absolute;
+  top:100%;
+  margin-top: -5px;
+  left:-5px;
+}
+.bottomRightCorner{
+  position: absolute;
+  left:100%;
+  top:100%;
+  margin-left: -5px;
+  margin-top:-5px;
+}
+.hide{
+  display: none;
 }

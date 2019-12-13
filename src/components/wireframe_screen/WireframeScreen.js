@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import { getFirestore } from 'redux-firestore';
 import {Button, Icon} from 'react-materialize';
+import Control from './Control';
 
 class WireframeScreen extends Component {
     state = {
@@ -21,9 +22,34 @@ class WireframeScreen extends Component {
         console.log("wireframe after change: ", this.state.wireframe);
     }
 
+    handleSelect=(control)=>{
+        this.setState({selectedControl:control});
+    }
+    handleDeselect=()=>{
+        this.setState({selectedControl:null})
+    }
+
+    handleDrag=(x, y, index)=>{
+        var wireframe=this.state.wireframe;
+        wireframe.controls[index].position_left=x;
+        wireframe.controls[index].position_top=y;
+        this.setState({wireframe: wireframe});
+    }
+
+    handleResize=(width, height,position, index)=>{
+        var wireframe=this.state.wireframe;
+        width=width.match(/\d+/g);
+        height=height.match(/\d+/g);
+        wireframe.controls[index]={...wireframe.controls[index], width:width, height:height, 
+            position_left:position.x, 
+            position_top: position.y}
+        this.setState({wireframe: wireframe});
+    }
+
     render() {
         const auth = this.props.auth;
         const wireframe = this.state.wireframe;
+        const selectedControl=this.state.selectedControl;
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
@@ -76,35 +102,57 @@ class WireframeScreen extends Component {
                         
                     </div>
                     </div>
-                    <div className="col s6 showPlace">
-                        bbb
+                    <div className="col s6 showPlace hideOverflow">
+                        <div className="wireframePlace hideOverflow" style={
+                            {
+                                width: wireframe.width,
+                                height:wireframe.height,
+                            }
+                        }>
+                        {wireframe.controls && wireframe.controls.map(control => (
+                                <Control 
+                                index={wireframe.controls.indexOf(control)}
+                                selectedIndex={wireframe.controls.indexOf(this.state.selectedControl)}
+                                control={control} 
+                                select={this.handleSelect}
+                                deselect={this.handleDeselect}
+                                drag={this.handleDrag}
+                                changeSize={this.handleResize}
+                                >
+                                </Control>
+                            ))}
+                        </div>
                     </div>
                     <div className="col s3 editPlace z-depth-999">
-                        <div>Properties</div>
-                        <input className="browser-default" type="text" name="properties" id="properties" onChange={this.handleChange} value="ab" />
+                        {!selectedControl?null:
+                        <div>
+                        <div>Properties
+                        <input className="browser-default" type="text" name="properties" id="properties" onChange={this.handleChange} value={selectedControl.properties} />
+                        </div>
                         <div>Font Size: 
-                        <input className="browser-default" type="text" name="font_size" id="font_size" onChange={this.handleChange} value="cc" />
+                        <input className="browser-default" type="text" name="font_size" id="font_size" onChange={this.handleChange} value={selectedControl.font_size} />
                         </div>
                         <div>
                             Background:
-                            <input type="color" name="background" id="background" onChange={this.handleChange} value="cb"/>
+                            <input type="color" name="background" id="background" onChange={this.handleChange} value={selectedControl.background}/>
                         </div>
                         <div>
                             Border Color:
-                            <input type="color" name="border_color" id="border_color" onChange={this.handleChange} value="cc" />
+                            <input type="color" name="border_color" id="border_color" onChange={this.handleChange} value={selectedControl.border_color} />
                         </div>
                         <div>
                             Text Color:
-                            <input type="color" name="text_color" id="text_color" onChange={this.handleChange} value="cc" />
+                            <input type="color" name="text_color" id="text_color" onChange={this.handleChange} value={selectedControl.text_color} />
                         </div>
                         <div>
                             Border Thickness:
-                            <input className="browser-default" type="text" name="border_thickness" id="border_thickness" onChange={this.handleChange} value="cb"/>
+                            <input className="browser-default" type="text" name="border_thickness" id="border_thickness" onChange={this.handleChange} value={selectedControl.border_thickness}/>
                         </div>
                         <div>
                             Border Radius:
-                            <input className="browser-default" type="text" name="border_radius" id="border_radius" onChange={this.handleChange} value="cc" />
+                            <input className="browser-default" type="text" name="border_radius" id="border_radius" onChange={this.handleChange} value={selectedControl.border_radius} />
                         </div>
+                        </div>}
                     </div>
                 </div>
             </div>

@@ -4,8 +4,8 @@
             "key": 0,
             "name": "My dumb App",
             "owner": "Rick Astley",
-            "width":"500px",
-            "height":"500px",
+            "width":500,
+            "height":500,
             "controls": [
                 {
                     "id": "button",
@@ -16,10 +16,10 @@
                     "border_thickness": 2,
                     "border_radius":2,
                     "text_color": "#13A1CC",
-                    "position_left":"200px",
-                    "position_top":"200px",
-                    "width":"40px",
-                    "height":"20px"
+                    "position_left":200,
+                    "position_top":200,
+                    "width":40,
+                    "height":20
                 },
                 {
                     "id": "container",
@@ -30,10 +30,10 @@
                     "border_thickness": 2,
                     "border_radius":2,
                     "text_color": "#13A1CC",
-                    "position_left":"0px",
-                    "position_top":"0px",
-                    "width":"500px",
-                    "height":"500px"
+                    "position_left":0,
+                    "position_top":0,
+                    "width":500,
+                    "height":500
                 },
                 {
                     "id": "textfield",
@@ -44,10 +44,10 @@
                     "border_thickness": 2,
                     "border_radius":2,
                     "text_color": "#13A1CC",
-                    "position_left":"50px",
-                    "position_top":"50px",
-                    "width":"50px",
-                    "height":"20px"
+                    "position_left":50,
+                    "position_top":50,
+                    "width":50,
+                    "height":20
                 }
             ]
         },
@@ -55,8 +55,8 @@
             "key": 1,
             "name": "My Homepage",
             "owner": "Bob Vila",
-            "width":"600px",
-            "height":"800px",
+            "width":600,
+            "height":800,
             "controls": [
                 {
                     "id": "container",
@@ -67,10 +67,10 @@
                     "border_thickness": 2,
                     "border_radius":3,
                     "text_color": "#13A1CC",
-                    "position_left":"0px",
-                    "position_top":"0px",
-                    "width":"500px",
-                    "height": "700px"
+                    "position_left":0,
+                    "position_top":0,
+                    "width":500,
+                    "height":700
                 },
                 {
                     "id": "label",
@@ -81,10 +81,10 @@
                     "border_thickness": 1,
                     "border_radius":3,
                     "text_color": "#13A1CC",
-                    "position_left":"100px",
-                    "position_top":"100px",
-                    "width":"80px",
-                    "height": "20px"
+                    "position_left":100,
+                    "position_top":100,
+                    "width":80,
+                    "height": 20
                 },
                 {
                     "id": "button",
@@ -95,10 +95,10 @@
                     "border_thickness": 3,
                     "border_radius":4,
                     "text_color": "#13A1CC",
-                    "position_left":"100px",
-                    "position_top":"300px",
-                    "width":"50px",
-                    "height": "10px"
+                    "position_left":100,
+                    "position_top":300,
+                    "width":50,
+                    "height": 10
                 }
             ]
         },
@@ -106,8 +106,8 @@
             "key": 2,
             "name": "CSE316Homepage",
             "owner": "Richard King",
-            "width":"800px",
-            "height":"1000px",
+            "width":800,
+            "height":1000,
             "controls": [
                 {
                     "id": "container",
@@ -120,8 +120,8 @@
                     "text_color": "#13A1CC",
                     "position_left":"20px",
                     "position_top":"20px",
-                    "width":"500px",
-                    "height": "700px"
+                    "width":500,
+                    "height": 700
                 },
                 {
                     "id": "label",
@@ -132,10 +132,10 @@
                     "border_thickness": 2,
                     "border_radius":1,
                     "text_color": "#9BA4A6",
-                    "position_left":"200px",
-                    "position_top":"300px",
-                    "width":"100px",
-                    "height": "30px"
+                    "position_left":200,
+                    "position_top":300,
+                    "width":100,
+                    "height":30
                 },
                 {
                     "id": "textfield",
@@ -146,10 +146,10 @@
                     "border_thickness": 3,
                     "border_radius":3,
                     "text_color": "#2B7F98",
-                    "position_left":"200px",
-                    "position_top":"400px",
-                    "width":"100px",
-                    "height": "30px"
+                    "position_left":200,
+                    "position_top":400,
+                    "width":100,
+                    "height": 30
                 },
                 {
                     "id": "button",
@@ -160,10 +160,10 @@
                     "border_thickness": 3,
                     "border_radius":3,
                     "text_color": "#13A1CC",
-                    "position_left":"200px",
-                    "position_top":"500px",
-                    "width":"50px",
-                    "height": "20px"
+                    "position_left":200,
+                    "position_top":500,
+                    "width":50,
+                    "height": 20
                 }
             ]
         }
