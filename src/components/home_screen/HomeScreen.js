@@ -10,15 +10,20 @@ class HomeScreen extends Component {
         const newWireframe={
             name:'unknown',
             owner:'unknown',
-            width: '500px',
-            height: '500px',
+            width: 450,
+            height: 450,
+            zoomLevel:1,
             controls:[]
         }
+        const wireframes=this.props.wireframes;
+        console.log(wireframes);
         const firestore=getFirestore();
-        firestore.collection('users').doc(this.props.auth.uid).update({
-            wireframes: this.state.firebase.firestore.FieldValue.arrayUnion(newWireframe)
-        }).then((docRef)=>{
-            this.props.history.push('/wireframe/'+docRef.id)
+        wireframes.unshift(newWireframe);
+        for(var x=0; x<wireframes.length;x++){
+            wireframes[x].key=x;
+        }
+        firestore.collection("users").doc(this.props.auth.uid).update({wireframes}).then(()=>{
+            this.props.history.push('/wireframe/'+newWireframe.key);
         })
     }
     render() {
@@ -55,6 +60,7 @@ const mapStateToProps = (state) => {
     console.log("state in homescreen", state)
     return {
         auth: state.firebase.auth,
+        wireframes: state.firebase.profile.wireframes
     };
 };
 

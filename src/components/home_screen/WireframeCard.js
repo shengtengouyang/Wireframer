@@ -1,6 +1,9 @@
 import React from 'react';
 
 class WireframeCard extends React.Component {
+    handleModalYes=()=>{
+        console.log("key"+this.props.wireframe.key);
+    }
 
     render() {
         const { wireframe } = this.props;
