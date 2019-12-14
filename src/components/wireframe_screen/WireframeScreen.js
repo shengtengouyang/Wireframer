@@ -10,6 +10,8 @@ import Control from './Control';
 class WireframeScreen extends Component {
     state = {
         wireframe: this.props.wireframe,
+        width:this.props.wireframe?this.props.wireframe.width:0,
+        height:this.props.wireframe?this.props.wireframe.height:0,
         selectedControl: null
     }
 
@@ -20,6 +22,19 @@ class WireframeScreen extends Component {
             wireframe: {...this.state.wireframe, [target.id]:target.value},
         }));
         console.log("wireframe after change: ", this.state.wireframe);
+    }
+    handleChangeDimension=(e)=>{
+        const{target}=e;
+        this.setState({[target.id]:target.value})
+    }
+    handleUpdate=()=>{
+        const {width, height}=this.state;
+        var {wireframe}=this.state;
+        if(width&&height&&!(wireframe.width==width&&wireframe.height==height)){
+            wireframe.width=width;
+            wireframe.height=height;
+            this.setState({wireframe})
+        }
     }
 
     handleChangeControl=(e)=>{
@@ -45,7 +60,7 @@ class WireframeScreen extends Component {
         var wireframe=this.state.wireframe;
         wireframe.controls[index].position_left=x;
         wireframe.controls[index].position_top=y;
-        this.setState({wireframe});
+        this.setState({wireframe,selectedControl:wireframe.controls[index]});
     }
 
     handleResize=(width, height,position, index)=>{
@@ -54,8 +69,8 @@ class WireframeScreen extends Component {
         height=height.match(/\d+/g);
         wireframe.controls[index]={...wireframe.controls[index], width:width, height:height, 
             position_left:position.x, 
-            position_top: position.y}
-        this.setState({wireframe: wireframe});
+            position_top:position.y}
+        this.setState({wireframe, selectedControl:wireframe.controls[index]});
     }
     handleZoomIn=()=>{
         var wireframe=this.state.wireframe;
@@ -75,8 +90,7 @@ class WireframeScreen extends Component {
 
     render() {
         const auth = this.props.auth;
-        const wireframe = this.state.wireframe;
-        const selectedControl=this.state.selectedControl;
+        const {wireframe, selectedControl, width, height} = this.state;
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
@@ -118,22 +132,24 @@ class WireframeScreen extends Component {
 
                         <div className="input-field col s6">
                             <label className={wireframe.width?"active":""} htmlFor="digit">Width</label>
-                            <input className="active" type="number" name="width" id="width" onChange={this.handleChange} value={wireframe.width} />
+                            <input className="active" type="number" name="width" id="width" onChange={this.handleChangeDimension} value={width} />
                         </div>
                         <div className="input-field col s6">
                             <label className={wireframe.height?"active":""} htmlFor="digit">Height</label>
-                            <input className="active" type="number" name="height" id="height" onChange={this.handleChange} value={wireframe.height} />
+                            <input className="active" type="number" name="height" id="height" onChange={this.handleChangeDimension} value={height} />
                         </div>
 
-                        <div className="center"><Button>Update</Button></div>
+                        <div className="center"><Button onClick={this.handleUpdate} style={
+                            {opacity:(width==wireframe.width&&height==wireframe.height)||!width||!height?0.2:1}
+                            }>Update</Button></div>
                         
                     </div>
                     </div>
                     <div className="col s6 showPlace hideOverflow">
                         <div className="wireframePlace hideOverflow" style={
                             {
-                                width: wireframe.width,
-                                height:wireframe.height,
+                                width: wireframe.width+"px",
+                                height: wireframe.height+"px",
                                 transform: "translate(-50%, -50%)"+"scale("+wireframe.zoomLevel+")",
                             }
                         }>

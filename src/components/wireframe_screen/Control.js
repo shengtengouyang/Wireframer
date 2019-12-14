@@ -23,7 +23,7 @@ class Control extends React.Component {
                     borderColor:control.border_color,
                     borderStyle:"solid",
                     alignItems:"center",
-                    justifyContent: "center",
+                    justifyContent: control.id==="textfield"?null:"center",
                     borderWidth: control.border_thickness+"px",
                     borderRadius: control.border_radius+"px",
                     fontSize: control.font_size+"px",
