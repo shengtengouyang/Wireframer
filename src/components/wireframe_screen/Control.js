@@ -2,12 +2,9 @@ import React from 'react';
 import {Rnd} from 'react-rnd';
 import { relative } from 'path';
 class Control extends React.Component {
-
     render() {
         const { index,selectedIndex,control, select, zoomLevel,drag, changeSize} = this.props;
         const selected=selectedIndex===index
-        console.log("width in control"+index, control.width)
-        console.log("height in control"+index, control.height)
         return (
             <Rnd
                 onClick={(e)=>{select(control);e.stopPropagation()}}
@@ -32,7 +29,6 @@ class Control extends React.Component {
                 scale={zoomLevel}
                 onDragStop={(e,d)=>{drag(d.x, d.y, index)}}
                 onResizeStop={(e,d,ref,delta,position)=>{changeSize(ref.style.width,ref.style.height,position,index);
-                console.log(position);
                 }}
                 bounds=".wireframePlace"
                 enableResizing={{
