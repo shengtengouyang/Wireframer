@@ -75,10 +75,26 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   height: 50px;
   width: 80px;
   margin: 10% auto 0;
+  background: white;
+}
+.labelShape{
+  height:22.5px;
+  width:120px;
+  margin: auto;
+}
+.inputShape{
+  height:25px;
+  width:160px;
+  background: white;
+  margin: auto;
+  text-align: left;
+  color:gray;
 }
 .buttonShape{
   height: 25px;
   width: 90px;
+  margin: auto;
+  background: #E8E8E8;
 }
 
 .buttonLabel, .inputLabel, .labelLabel, .containerLabel{
@@ -86,7 +102,7 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   font-weight: bold;
   margin-bottom: 10%;
 }
-.showPlace, .editPlace, .toolPlace, .wireframePlace, .buttonShape, .containerShape, .browser-default{
+.showPlace,.inputShape, .editPlace, .toolPlace, .wireframePlace, .buttonShape, .containerShape, .browser-default{
   border:1px solid black;
   border-radius: 2px;
   position: relative;
@@ -102,6 +118,10 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 }
 .toolPlace{
   width: 25%;
+  background: #F7F5F6;
+}
+.editPlace{
+  background:	#F7F5F6;
 }
 .topLeftCorner, .topRightCorner, .bottomLeftCorner, .bottomRightCorner{
   width: 10px;

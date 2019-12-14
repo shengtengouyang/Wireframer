@@ -49,6 +49,73 @@ class WireframeScreen extends Component {
         this.setState({wireframe, selectedControl})
     }
 
+    handleAddControl=(e)=>{
+        const{target}=e;
+        const id=target.id;
+        var wireframe=this.state.wireframe;
+        var control={};
+        switch (id){
+            case "container":
+                control={
+                id:id,
+                height:50,
+                width: 80,
+                background:"white",
+                border_color: "black",
+                border_radius:2,
+                border_thickness:1,
+                position_left:0,
+                position_top:0}; break;
+            case "label":
+                control={
+                    id:id,
+                    height: 22.5,
+                    width:120,
+                    properties: "Promote for Input",
+                    font_size:16,
+                    background:null,
+                    text_color:"black",
+                    border_color:null,
+                    border_radius:0,
+                    border_thickness:0,
+                    position_left:0,
+                    position_top:0
+                }; break;
+            case "button":
+                control={
+                    id:id,
+                    height: 25,
+                    width:90,
+                    properties: "Submit",
+                    font_size: 16,
+                    background:"#E8E8E8",
+                    border_color:"black",
+                    text_color:"black",
+                    border_thickness:1,
+                    border_radius:2,
+                    position_left:0,
+                    position_top:0
+                }; break;
+            case "textfield":
+                control={
+                    id:id,
+                    height:25,
+                    width:160,
+                    properties: "Input",
+                    font_size:16,
+                    background: "white",
+                    border_color:"black",
+                    text_color:"gray",
+                    border_thickness:1,
+                    border_radius:2,
+                    position_left:0,
+                    position_top:0
+                };
+        }
+        wireframe.controls.push(control);
+        this.setState({wireframe});
+    }
+
     handleSelect=(control)=>{
         this.setState({selectedControl:control});
     }
@@ -58,6 +125,8 @@ class WireframeScreen extends Component {
 
     handleDrag=(x, y, index)=>{
         var wireframe=this.state.wireframe;
+        console.log("drag end x"+x);
+        console.log("drag end y"+y);
         wireframe.controls[index].position_left=x;
         wireframe.controls[index].position_top=y;
         this.setState({wireframe,selectedControl:wireframe.controls[index]});
@@ -121,13 +190,13 @@ class WireframeScreen extends Component {
                         <div className="col s2">close</div>
                     </div>    
                     <div className="controlPlace col s12 center">
-                        <div className="containerShape"></div>
+                        <div className="containerShape" id="container" onClick={this.handleAddControl}></div>
                         <div className="containerLabel">container</div>
-                        <div>Promote for Input</div>
+                        <div className="labelShape" id="label" onClick={this.handleAddControl}>Promote for Input</div>
                         <div className="labelLabel">Label</div>
-                        <button className="buttonShape">Submit</button>
+                        <div id="button" className="buttonShape" onClick={this.handleAddControl}>Submit</div>
                         <div className="buttonLabel">Button</div>
-                        <input className="inputShape browser-default" type="text" placeholder="Input" readOnly onClick={()=>{alert("bbb")}}></input>
+                        <div id="textfield" className="inputShape"onClick={this.handleAddControl}>Input</div>
                         <div className="inputLabel">Textfield</div>
 
                         <div className="input-field col s6">
@@ -150,7 +219,7 @@ class WireframeScreen extends Component {
                             {
                                 width: wireframe.width+"px",
                                 height: wireframe.height+"px",
-                                transform: "translate(-50%, -50%)"+"scale("+wireframe.zoomLevel+")",
+                                transform: "translate(-50%, -50%) scale("+wireframe.zoomLevel+")",
                             }
                         }>
                         {wireframe.controls && wireframe.controls.map(control => (
@@ -167,13 +236,13 @@ class WireframeScreen extends Component {
                             ))}
                         </div>
                     </div>
-                    <div className="col s3 editPlace z-depth-999">
+                    <div className="col s3 editPlace">
                         {!selectedControl?null:
                         <div onClick={(e)=>{e.stopPropagation()}}>
-                        <div>Properties
+                        <div className={selectedControl.id==="container"?"hide":null}>Properties
                         <input className="browser-default" type="text" name="properties" id="properties" onChange={this.handleChangeControl} value={selectedControl.properties} />
                         </div>
-                        <div>Font Size: 
+                        <div className={selectedControl.id==="container"?"hide":null}>Font Size: 
                         <input className="browser-default" type="text" name="font_size" id="font_size" onChange={this.handleChangeControl} value={selectedControl.font_size} />
                         </div>
                         <div>
@@ -184,7 +253,7 @@ class WireframeScreen extends Component {
                             Border Color:
                             <input type="color" name="border_color" id="border_color" onChange={this.handleChangeControl} value={selectedControl.border_color} />
                         </div>
-                        <div>
+                        <div className={selectedControl.id==="container"?"hide":null}>
                             Text Color:
                             <input type="color" name="text_color" id="text_color" onChange={this.handleChangeControl} value={selectedControl.text_color} />
                         </div>
