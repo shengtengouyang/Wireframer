@@ -30,7 +30,6 @@ class DatabaseTester extends React.Component {
                     controls:wireframeJson.controls,
                     user: auth.uid,
                     zoomLevel:wireframeJson.zoomLevel,
-                    date: new Date()
                 }
             wireframes.push(wireframe);
         });

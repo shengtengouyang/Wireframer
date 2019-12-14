@@ -12,13 +12,15 @@ class WireframeScreen extends Component {
         wireframe: this.props.wireframe,
         width:this.props.wireframe?this.props.wireframe.width:0,
         height:this.props.wireframe?this.props.wireframe.height:0,
-        selectedControl: null
+        selectedControl: null,
+        updated:false,
     }
 
     handleChange = (e) => {
         const { target } = e;
         this.setState((state)=>({
             ...state,
+            updated:true,
             wireframe: {...this.state.wireframe, [target.id]:target.value},
         }));
     }
@@ -28,28 +30,30 @@ class WireframeScreen extends Component {
     }
     handleUpdate=()=>{
         const {width, height}=this.state;
-        var {wireframe}=this.state;
+        var wireframe={...this.state.wireframe};
         if(width&&height&&!(wireframe.width==width&&wireframe.height==height)){
             wireframe.width=width;
             wireframe.height=height;
-            this.setState({wireframe})
+            this.setState({wireframe, 
+                updated:true})
         }
     }
 
     handleChangeControl=(e)=>{
         const{target}=e;
-        var wireframe=this.state.wireframe;
+        var wireframe={...this.state.wireframe,controls:[...this.state.wireframe.controls]};
         var selectedControl=this.state.selectedControl;
-        const index=wireframe.controls.indexOf(selectedControl);
+        const index=this.state.wireframe.controls.indexOf(selectedControl);
         wireframe.controls[index]={...selectedControl, [target.id]:target.value};
         selectedControl=wireframe.controls[index];
-        this.setState({wireframe, selectedControl})
+        this.setState({
+            updated:true,wireframe, selectedControl})
     }
 
     handleAddControl=(e)=>{
         const{target}=e;
         const id=target.id;
-        var wireframe=this.state.wireframe;
+        var wireframe={...this.state.wireframe, controls:[...this.state.wireframe.controls]};
         var control={};
         switch (id){
             case "container":
@@ -111,7 +115,8 @@ class WireframeScreen extends Component {
         }
         control.key=wireframe.controls.length;
         wireframe.controls.push(control);
-        this.setState({wireframe});
+        this.setState({
+            updated:true,wireframe});
     }
 
     handleSelect=(control)=>{
@@ -122,20 +127,22 @@ class WireframeScreen extends Component {
     }
 
     handleDrag=(x, y, index)=>{
-        var wireframe=this.state.wireframe;
+        var wireframe={...this.state.wireframe, controls:[...this.state.wireframe.controls]}
         wireframe.controls[index].position_left=x;
         wireframe.controls[index].position_top=y;
-        this.setState({wireframe,selectedControl:wireframe.controls[index]});
+        this.setState({
+            updated:true,wireframe,selectedControl:wireframe.controls[index]});
     }
 
     handleResize=(width, height,position, index)=>{
-        var wireframe=this.state.wireframe;
+        var wireframe={...this.state.wireframe, controls:[...this.state.wireframe.controls]};
         width=width.match(/\d+/g);
         height=height.match(/\d+/g);
         wireframe.controls[index]={...wireframe.controls[index], width:width, height:height, 
             position_left:position.x, 
             position_top:position.y}
-        this.setState({wireframe, selectedControl:wireframe.controls[index]});
+        this.setState({
+            updated:true,wireframe, selectedControl:wireframe.controls[index]});
     }
     handleZoomIn=()=>{
         var wireframe=this.state.wireframe;
@@ -158,7 +165,8 @@ class WireframeScreen extends Component {
         }
     }
     handleKeyPress=(e)=>{
-        var {selectedControl, wireframe}=this.state;
+        var {selectedControl}=this.state;
+        var wireframe={...this.state.wireframe, controls:[...this.state.wireframe.controls]}
         var controls=wireframe.controls;
         if(e.key==='Delete'){
             e.preventDefault();
@@ -166,7 +174,8 @@ class WireframeScreen extends Component {
                 controls.splice(controls.indexOf(selectedControl),1);
                 // this.reOrder(controls);
                 wireframe.controls=controls;
-                this.setState({wireframe, selectedControl:null});
+                this.setState({
+                    updated:true,wireframe, selectedControl:null});
             }
         }
         else if(e.ctrlKey&&e.key==="d"){
@@ -178,16 +187,22 @@ class WireframeScreen extends Component {
                 controls.push(control);
                 this.reOrder(controls);
                 wireframe.controls=controls;
-                this.setState({wireframe, selectedControl:control});
+                this.setState({
+                    updated:true,wireframe, selectedControl:control});
             }
         }
     }
     handleSave=()=>{
         const firestore=getFirestore();
-        console.log(this.props.wireframe==this.state.wireframe);
-        console.log(this.props.wireframe);
-        console.log(this.state.wireframe);
-        // firestore.collection("users").doc(this.props.auth.uid)
+        this.setState({
+            updated:false})
+        if(this.state.wireframe!=this.props.wireframe){
+            const wireframes=this.props.wireframes;
+            wireframes[this.props.wireframe.key]=this.state.wireframe;
+            firestore.collection("users").doc(this.props.auth.uid).update({
+                wireframes:wireframes,
+            })
+        }
     }
     render() {
         const auth = this.props.auth;
@@ -218,7 +233,7 @@ class WireframeScreen extends Component {
                         <div className="col s2" onClick={()=>this.handleZoomOut()} style={wireframe.zoomLevel<=0.5?{opacity:0.3}:{}}>
                             <Icon>zoom_out</Icon>
                         </div>
-                        <div className="col s2 offset-s4" style={this.state.wireframe===this.props.wireframe?{opacity:0.3}:{}} onClick={this.handleSave}>save</div>
+                        <div className="col s2 offset-s4" style={!this.state.updated?{opacity:0.3}:{}} onClick={this.handleSave}>save</div>
                         <div className="col s2">close</div>
                     </div>    
                     <div className="controlPlace col s12 center">
@@ -319,9 +334,9 @@ const mapStateToProps = (state, ownProps) => {
             wireframe.controls[x].key=x;
         }
     }
-    console.log("state", wireframe?wireframe.date:null);
     return{
         wireframe,
+        wireframes,
         auth: state.firebase.auth
     }
 };

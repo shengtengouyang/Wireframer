@@ -14,11 +14,6 @@ class WireframeLinks extends React.Component {
             <div className="todo-lists section">
                 {wireframes && wireframes.map(wireframe => (
                     <Link to={'/wireframe/' + wireframe.key} key={wireframe.key} onClick={()=>{
-                        const firestore=getFirestore();
-                        wireframes[wireframe.key]={...wireframe, date: new Date()};
-                        firestore.collection('users').doc(auth.uid).update({
-                            wireframes:wireframes
-                        })
                     }}>
                         <WireframeCard wireframe={wireframe} auth={auth}/>
                     </Link>

@@ -12,8 +12,7 @@ class HomeScreen extends Component {
             owner:'unknown',
             width: '500px',
             height: '500px',
-            controls:[],
-            date: new Date()
+            controls:[]
         }
         const firestore=getFirestore();
         firestore.collection('users').doc(this.props.auth.uid).update({
