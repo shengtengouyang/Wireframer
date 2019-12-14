@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import { getFirestore } from 'redux-firestore';
-import {Button, Icon} from 'react-materialize';
+import {Button, Icon, Modal} from 'react-materialize';
 import Control from './Control';
 
 class WireframeScreen extends Component {
@@ -31,7 +31,9 @@ class WireframeScreen extends Component {
     handleUpdate=()=>{
         const {width, height}=this.state;
         var wireframe={...this.state.wireframe};
-        if(width&&height&&!(wireframe.width==width&&wireframe.height==height)){
+        if(width&&height&&!(wireframe.width==width&&wireframe.height==height)
+            &&width>0&&width<5001&&height>0&&height<5001
+        ){
             wireframe.width=width;
             wireframe.height=height;
             this.setState({wireframe, 
@@ -149,16 +151,16 @@ class WireframeScreen extends Component {
     }
     handleZoomIn=()=>{
         var wireframe={...this.state.wireframe};
-        if(wireframe.zoomLevel<2){
-            wireframe.zoomLevel+=0.1;
+        if(wireframe.zoomLevel<32){
+            wireframe.zoomLevel*=2;
             this.setState({wireframe: wireframe});
         }
     }
 
     handleZoomOut=()=>{
         var wireframe={...this.state.wireframe};
-        if(wireframe.zoomLevel>0.5){
-            wireframe.zoomLevel-=0.1;
+        if(wireframe.zoomLevel>0.03125){
+            wireframe.zoomLevel/=2;
             this.setState({wireframe: wireframe});
         }
     }
@@ -245,7 +247,12 @@ class WireframeScreen extends Component {
                             <Icon>zoom_out</Icon>
                         </div>
                         <Link className="col s2 offset-s4" style={!this.state.updated?{opacity:0.3, cursor:"default"}:{}} onClick={this.handleSave}>save</Link>
-                        <Link to={'/'} className="col s2" onClick={this.handleClose}>close</Link>
+                        {this.state.updated?
+                        <Modal header="Leave editing?" options={{dismissible:false}} trigger={<Link className="col s2">close</Link>}
+                        actions={<p className="left" style={{padding:'0 0 0 20px'}}>The wireframe will not be be saved.</p>}>
+                        <p>Are you sure you want to leave without saving?</p>  
+                        <Link to='/'><Button className="modal-close" waves="light" style={{marginRight: '5px'}} onClick={()=>this.handleClose}>Yes</Button></Link>
+                        <Button className="modal-close" waves="light" style={{marginRight: '5px'}}> No</Button></Modal>:<Link to="/" className="col s2" onClick={this.handleClose}>close</Link>}
                     </div>    
                     <div className="controlPlace col s12 center">
                         <div className="containerShape" id="container" onClick={this.handleAddControl}></div>
@@ -267,7 +274,7 @@ class WireframeScreen extends Component {
                         </div>
 
                         <div className="center"><Button onClick={this.handleUpdate} style={
-                            {opacity:(width==wireframe.width&&height==wireframe.height)||!width||!height?0.2:1}
+                            {opacity:(width==wireframe.width&&height==wireframe.height)||!width||!height||width<1||height<1||width>5000||height>5000?0.2:1}
                             }>Update</Button></div>
                         
                     </div>
