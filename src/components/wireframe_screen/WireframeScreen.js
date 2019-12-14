@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
@@ -128,10 +128,13 @@ class WireframeScreen extends Component {
 
     handleDrag=(x, y, index)=>{
         var wireframe={...this.state.wireframe, controls:[...this.state.wireframe.controls]}
-        wireframe.controls[index].position_left=x;
-        wireframe.controls[index].position_top=y;
+        wireframe.controls[index]={...wireframe.controls[index], 
+            position_left:x, 
+            position_top:y}
         this.setState({
-            updated:true,wireframe,selectedControl:wireframe.controls[index]});
+            wireframe,
+            selectedControl:wireframe.controls[index],
+            updated:true});
     }
 
     handleResize=(width, height,position, index)=>{
@@ -145,7 +148,7 @@ class WireframeScreen extends Component {
             updated:true,wireframe, selectedControl:wireframe.controls[index]});
     }
     handleZoomIn=()=>{
-        var wireframe=this.state.wireframe;
+        var wireframe={...this.state.wireframe};
         if(wireframe.zoomLevel<2){
             wireframe.zoomLevel+=0.1;
             this.setState({wireframe: wireframe});
@@ -153,7 +156,7 @@ class WireframeScreen extends Component {
     }
 
     handleZoomOut=()=>{
-        var wireframe=this.state.wireframe;
+        var wireframe={...this.state.wireframe};
         if(wireframe.zoomLevel>0.5){
             wireframe.zoomLevel-=0.1;
             this.setState({wireframe: wireframe});
@@ -204,6 +207,14 @@ class WireframeScreen extends Component {
             })
         }
     }
+    handleClose=()=>{
+        const firestore=getFirestore();
+        const wireframes=this.props.wireframes;
+        wireframes[this.props.wireframe.key].zoomLevel=1;
+        firestore.collection("users").doc(this.props.auth.uid).update({
+            wireframes:wireframes,
+        })
+    }
     render() {
         const auth = this.props.auth;
         const {wireframe, selectedControl, width, height} = this.state;
@@ -233,8 +244,8 @@ class WireframeScreen extends Component {
                         <div className="col s2" onClick={()=>this.handleZoomOut()} style={wireframe.zoomLevel<=0.5?{opacity:0.3}:{}}>
                             <Icon>zoom_out</Icon>
                         </div>
-                        <div className="col s2 offset-s4" style={!this.state.updated?{opacity:0.3}:{}} onClick={this.handleSave}>save</div>
-                        <div className="col s2">close</div>
+                        <Link className="col s2 offset-s4" style={!this.state.updated?{opacity:0.3, cursor:"default"}:{}} onClick={this.handleSave}>save</Link>
+                        <Link to={'/'} className="col s2" onClick={this.handleClose}>close</Link>
                     </div>    
                     <div className="controlPlace col s12 center">
                         <div className="containerShape" id="container" onClick={this.handleAddControl}></div>
@@ -273,8 +284,8 @@ class WireframeScreen extends Component {
                             <div tabIndex="0" onKeyDown={this.handleKeyPress}>
                                 <Control 
                                 key={control.key}
-                                index={wireframe.controls.indexOf(control)}
-                                selectedIndex={wireframe.controls.indexOf(this.state.selectedControl)}
+                                index={control.key}
+                                selectedIndex={this.state.selectedControl?this.state.selectedControl.key:null}
                                 control={control} 
                                 select={this.handleSelect}
                                 drag={this.handleDrag}
