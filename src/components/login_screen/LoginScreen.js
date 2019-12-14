@@ -63,8 +63,9 @@ class LoginScreen extends Component {
           </form>
 
           <div className="col s8 banner">
-                      TM<br />
-            Wireframer
+            Best<br/>
+            <h5 className="col offset-s8" style={{marginBottom:"-5%"}}>TM</h5>
+            Wireframer<br/>
           </div>
         </div>
       </div>

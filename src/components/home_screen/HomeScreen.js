@@ -40,7 +40,8 @@ class HomeScreen extends Component {
 
                     <div className="col s8">
                         <div className="banner">
-                                      TM<br />
+                            Best <br/>
+                            <h5 className="col offset-s9" style={{marginBottom:"-5%"}}>TM</h5>
                             Wireframer
                         </div>
                         

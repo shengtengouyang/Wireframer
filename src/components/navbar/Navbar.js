@@ -29,6 +29,8 @@ class Navbar extends React.Component {
         <div className="container">
           <Link to="/" className="brand-logo" onClick={this.goHome}>Wireframer!</Link>
           {links}
+          <Link to="/databaseTester" className="right" style={!auth.uid||profile.UIDesigner?{opacity:0.3, cursor:'default'}:{}} 
+          onClick={(e)=>{if(profile.UIDesigner||!auth.uid){e.preventDefault()}}}>Test</Link>
         </div>
       </nav>
     );

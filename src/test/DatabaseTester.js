@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import todoJson from './TestJson.json'
 import { getFirestore } from 'redux-firestore';
 import { Redirect } from 'react-router-dom'
-
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
 class DatabaseTester extends React.Component {
 
     // NOTE, BY KEEPING THE DATABASE PUBLIC YOU CAN
@@ -43,8 +44,11 @@ class DatabaseTester extends React.Component {
     }
 
     render() {
-        const auth = this.props.auth;
+        const {auth,firebase} = this.props;
         if (!auth.uid) {
+            return <Redirect to="/" />;
+        }
+        if (this.props.UIDesigner){
             return <Redirect to="/" />;
         }
         return (
@@ -56,10 +60,17 @@ class DatabaseTester extends React.Component {
 }
 
 const mapStateToProps = function (state) {
+    console.log(state.firebase);
     return {
         auth: state.firebase.auth,
-        firebase: state.firebase
+        firebase: state.firebase,
+        UIDesigner:state.firebase.profile.UIDesigner
     };
 }
 
-export default connect(mapStateToProps)(DatabaseTester);
+export default compose(
+    connect(mapStateToProps),
+    firestoreConnect([
+        { collection: 'users'},
+      ]),
+)(DatabaseTester);
