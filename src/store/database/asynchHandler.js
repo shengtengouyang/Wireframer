@@ -17,9 +17,13 @@ export const logoutHandler = (firebase) => (dispatch, getState) => {
         dispatch(actionCreators.logoutSuccess);
     });
 };
-
 export const registerHandler = (newUser, firebase) => (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
+    try{
+    if(!newUser.firstName||!newUser.lastName){
+      throw new Error(newUser.firstName?newUser.lastName?null:"Last name should not be empty":"first name should not be empty")
+    }}
+    catch (err) {dispatch(actionCreators.registerError(err)); return;}
     firebase.auth().createUserWithEmailAndPassword(
         newUser.email,
         newUser.password,
@@ -29,8 +33,9 @@ export const registerHandler = (newUser, firebase) => (dispatch, getState, { get
         initials: `${newUser.firstName[0]}${newUser.lastName[0]}`,
         UIDesigner: true
     })).then(() => {
-        dispatch(actionCreators.registerSuccess);
+        dispatch(actionCreators.registerSuccess());
     }).catch((err) => {
-        dispatch(actionCreators.registerError);
+      console.log(err.message);
+        dispatch(actionCreators.registerError(err));
     });
 };

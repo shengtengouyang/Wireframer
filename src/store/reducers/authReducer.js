@@ -28,7 +28,7 @@ const authReducer = (state = initState, action) => {
     case actionCreators.REGISTER_ERROR:
       return {
         ...state,
-        authError: action.err.message,
+        authError: action.error.message,
       };
     default:
       return state;

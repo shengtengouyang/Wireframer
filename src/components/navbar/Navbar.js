@@ -6,11 +6,13 @@ import { firebaseConnect, firestoreConnect } from 'react-redux-firebase';
 import { getFirestore } from 'redux-firestore';
 import LoggedInLinks from './LoggedInLinks';
 import LoggedOutLinks from './LoggedOutLinks';
-
+import { registerSuccess } from '../../store/actions/actionCreators'
 class Navbar extends React.Component {
 
   goHome=()=>{
     const firestore=getFirestore();
+    this.props.clearError();
+    if(this.props.auth.uid){
     firestore.collection("users").doc(this.props.auth.uid).get().then((doc)=>
       {
         var wireframes=doc.data().wireframes;
@@ -20,6 +22,7 @@ class Navbar extends React.Component {
         firestore.collection("users").doc(this.props.auth.uid).update({wireframes})
       }
   );}
+}
   render() {
     const { auth, profile } = this.props;
     const links = auth.uid ? <LoggedInLinks profile={profile} /> : <LoggedOutLinks />;
@@ -41,10 +44,12 @@ const mapStateToProps = state => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile,
 });
-
+const mapDispatchToProps = dispatch => ({
+  clearError: ()=>dispatch(registerSuccess()),
+});
 export default compose(
   firebaseConnect(),
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect( [
     { collection:"users"}
   ]
