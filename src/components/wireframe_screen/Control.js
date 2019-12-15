@@ -7,7 +7,7 @@ class Control extends React.Component {
         const selected=selectedIndex===index
         return (
             <Rnd
-                onClick={(e)=>{select(control);e.stopPropagation()}}
+                onClick={(e)=>{select(control);e.stopPropagation(); console.log(control,"selected")}}
                 default={{
                     x:control.position_left,
                     y:control.position_top,

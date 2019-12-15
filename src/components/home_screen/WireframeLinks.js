@@ -18,11 +18,9 @@ class WireframeLinks extends React.Component {
     }
     handleEditWireframe=(key, wireframe)=>{
         const wireframes=this.props.wireframes;
-        wireframes.splice(key,1);
+        const index=this.props.wireframes.indexOf(wireframe);
+        wireframes.splice(index,1);
         wireframes.unshift(wireframe);
-        for(var x=0; x<wireframes.length;x++){
-            wireframes[x].key=x;
-        }
         const firestore=getFirestore();
         firestore.collection("users").doc(this.props.auth.uid).update({wireframes});
     }
@@ -39,7 +37,7 @@ class WireframeLinks extends React.Component {
                         <p>Are you sure you want to delete this wireframe?</p>  
                         <Button className="modal-close" waves="light" style={{marginRight: '5px'}} onClick={()=>this.handleModalYes(wireframe)}>Yes</Button>
                         <Button className="modal-close" waves="light" style={{marginRight: '5px'}}> No</Button></Modal>
-                    <Link to={'/wireframe/0'} key={wireframe.key} onClick={()=>this.handleEditWireframe(wireframe.key, wireframe)}>
+                    <Link to={'/wireframe/'+wireframe.key} key={wireframe.key} onClick={()=>this.handleEditWireframe(wireframe.key, wireframe)}>
                         <WireframeCard wireframes={wireframes} wireframe={wireframe} auth={auth}/>
                     </Link>
                     </div>))}

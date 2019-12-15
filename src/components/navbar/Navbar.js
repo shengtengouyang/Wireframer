@@ -12,6 +12,10 @@ class Navbar extends React.Component {
   goHome=()=>{
     const firestore=getFirestore();
     this.props.clearError();
+    const wireframes=this.props.profile.wireframes;
+    for(var x=0; x<wireframes.length;x++){
+      wireframes[x].key=x;
+    }
     if(this.props.auth.uid){
     firestore.collection("users").doc(this.props.auth.uid).get().then((doc)=>
       {

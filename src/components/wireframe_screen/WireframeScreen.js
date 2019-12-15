@@ -123,6 +123,7 @@ class WireframeScreen extends Component {
 
     handleSelect=(control)=>{
         this.setState({selectedControl:control});
+        console.log("selected", control)
     }
     handleDeselect=()=>{
         this.setState({selectedControl:null})
@@ -203,7 +204,7 @@ class WireframeScreen extends Component {
             updated:false})
         if(this.state.wireframe!=this.props.wireframe){
             const wireframes=this.props.wireframes;
-            wireframes[this.props.wireframe.key]=this.state.wireframe;
+            wireframes[this.props.wireframes.indexOf(this.props.wireframe)]=this.state.wireframe;
             firestore.collection("users").doc(this.props.auth.uid).update({
                 wireframes:wireframes,
             })
@@ -212,7 +213,10 @@ class WireframeScreen extends Component {
     handleClose=()=>{
         const firestore=getFirestore();
         const wireframes=this.props.wireframes;
-        wireframes[this.props.wireframe.key].zoomLevel=1;
+        for(var x=0;x<wireframes.length;x++){
+            wireframes[x].key=x;
+        }
+        wireframes[this.props.wireframes.indexOf(this.props.wireframe)].zoomLevel=1;
         firestore.collection("users").doc(this.props.auth.uid).update({
             wireframes:wireframes,
         })
@@ -345,13 +349,16 @@ const mapStateToProps = (state, ownProps) => {
     console.log("state is ", state)
     const { id } = ownProps.match.params;
     const {wireframes}=state.firebase.profile;
-    const wireframe=wireframes?wireframes[id]:null
-    if(wireframe){
-        wireframe.id=id;
-        for(var x=0;x<wireframe.controls.length;x++){
-            wireframe.controls[x].key=x;
+    var wireframe=null;
+    if(wireframes){
+    for(var x=0;x<wireframes.length;x++){
+        if (wireframes[x].key==id){
+            wireframe=wireframes[x]; 
+            for(var x=0;x<wireframe.controls.length;x++){
+                wireframe.controls[x].key=x;
+            }
         }
-    }
+    }}
     return{
         wireframe,
         wireframes,
